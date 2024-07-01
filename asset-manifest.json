@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/pricing-app/static/css/main.f855e6bc.css",
+    "main.js": "/pricing-app/static/js/main.e149e538.js",
+    "static/js/453.04773fc7.chunk.js": "/pricing-app/static/js/453.04773fc7.chunk.js",
+    "static/media/logo.svg": "/pricing-app/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/pricing-app/index.html",
+    "main.f855e6bc.css.map": "/pricing-app/static/css/main.f855e6bc.css.map",
+    "main.e149e538.js.map": "/pricing-app/static/js/main.e149e538.js.map",
+    "453.04773fc7.chunk.js.map": "/pricing-app/static/js/453.04773fc7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.e149e538.js"
+  ]
+}
