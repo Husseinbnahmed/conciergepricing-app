@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const calculateHourlyRate = (competitorPrice, numUnits, hoursPerWeek, minGrossMargin, competitorDiscount) => {
   const baseCost = 17.50;
-  const unitFactor = 1 + (numUnits / 10000);
+  const unitFactor = 1 + (numUnits / 5000); // up to 10% premium for 500 units in a building
   const hoursFactor = 1 - (hoursPerWeek / (24 * 7) * 0.1);
   const minPrice = baseCost / (1 - minGrossMargin);
   const suggestedPrice = Math.max(minPrice, competitorPrice * (1 - competitorDiscount));
