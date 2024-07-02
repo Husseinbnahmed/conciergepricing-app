@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-const calculateHourlyRate = (competitorPrice, numUnits, hoursPerWeek, minGrossMargin, competitorDiscount) => {
+const calculateHourlyRate = (competitorPrice, numUnits, hoursPerWeek, competitorDiscount) => {
   const baseCost = 17.50;
   const unitFactor = 1 + (numUnits / 5000); // up to 10% premium for 500 units in a building
   const hoursFactor = 1 - (hoursPerWeek / (24 * 7) * 0.1);
-  const minPrice = baseCost / (1 - minGrossMargin);
-  const suggestedPrice = Math.max(minPrice, competitorPrice * (1 - competitorDiscount));
-  const finalPrice = suggestedPrice * unitFactor * hoursFactor;
+  const finalPrice = competitorPrice * (1 - competitorDiscount) * unitFactor * hoursFactor;
+  const grossMargin = ((finalPrice - baseCost) / finalPrice) * 100;
   return {
     hourlyRate: Math.round(finalPrice * 100) / 100,
     baseCost,
     unitPremium: (unitFactor - 1) * 100, // Convert to percentage
     hoursDiscount: (1 - hoursFactor) * 100, // Convert to percentage
-    minPrice,
-    suggestedPrice
+    grossMargin: Math.round(grossMargin * 100) / 100
   };
 };
 
@@ -21,13 +19,12 @@ const PricingApp = () => {
   const [competitorPrice, setCompetitorPrice] = useState(25);
   const [numUnits, setNumUnits] = useState(200);
   const [hoursPerWeek, setHoursPerWeek] = useState(168);
-  const [minGrossMargin, setMinGrossMargin] = useState(0.25);
   const [competitorDiscount, setCompetitorDiscount] = useState(0.05);
   const [calculationDetails, setCalculationDetails] = useState({});
 
   useEffect(() => {
-    setCalculationDetails(calculateHourlyRate(competitorPrice, numUnits, hoursPerWeek, minGrossMargin, competitorDiscount));
-  }, [competitorPrice, numUnits, hoursPerWeek, minGrossMargin, competitorDiscount]);
+    setCalculationDetails(calculateHourlyRate(competitorPrice, numUnits, hoursPerWeek, competitorDiscount));
+  }, [competitorPrice, numUnits, hoursPerWeek, competitorDiscount]);
 
   const containerStyle = {
     minHeight: '100vh',
@@ -66,7 +63,7 @@ const PricingApp = () => {
     marginBottom: '32px',
   };
 
-  const sliderContainerStyle = {
+  const inputContainerStyle = {
     marginBottom: '24px',
   };
 
@@ -78,15 +75,13 @@ const PricingApp = () => {
     display: 'block',
   };
 
-  const sliderStyle = {
+  const inputStyle = {
     width: '100%',
-    WebkitAppearance: 'none',
-    appearance: 'none',
-    height: '4px',
-    background: '#0071e3',
-    outline: 'none',
-    opacity: '0.7',
-    transition: 'opacity 0.2s',
+    padding: '8px',
+    fontSize: '16px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    marginBottom: '16px',
   };
 
   const detailsStyle = {
@@ -113,76 +108,51 @@ const PricingApp = () => {
         </div>
 
         <div>
-          <div style={sliderContainerStyle}>
+          <div style={inputContainerStyle}>
             <label style={labelStyle}>
-              Competitor Price: ${competitorPrice}
+              Competitor Price: 
             </label>
             <input
-              type="range"
-              min={10}
-              max={50}
-              step={0.5}
+              type="number"
               value={competitorPrice}
               onChange={(e) => setCompetitorPrice(Number(e.target.value))}
-              style={sliderStyle}
+              style={inputStyle}
             />
           </div>
 
-          <div style={sliderContainerStyle}>
+          <div style={inputContainerStyle}>
             <label style={labelStyle}>
-              Number of Units: {numUnits}
+              Number of Units: 
             </label>
             <input
-              type="range"
-              min={1}
-              max={1000}
+              type="number"
               value={numUnits}
               onChange={(e) => setNumUnits(Number(e.target.value))}
-              style={sliderStyle}
+              style={inputStyle}
             />
           </div>
 
-          <div style={sliderContainerStyle}>
+          <div style={inputContainerStyle}>
             <label style={labelStyle}>
-              Hours per Week: {hoursPerWeek}
+              Hours per Week: 
             </label>
             <input
-              type="range"
-              min={1}
-              max={168}
+              type="number"
               value={hoursPerWeek}
               onChange={(e) => setHoursPerWeek(Number(e.target.value))}
-              style={sliderStyle}
+              style={inputStyle}
             />
           </div>
 
-          <div style={sliderContainerStyle}>
+          <div style={inputContainerStyle}>
             <label style={labelStyle}>
-              Minimum Gross Margin: {(minGrossMargin * 100).toFixed(0)}%
+              Competitor Discount: 
             </label>
             <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={minGrossMargin}
-              onChange={(e) => setMinGrossMargin(Number(e.target.value))}
-              style={sliderStyle}
-            />
-          </div>
-
-          <div style={sliderContainerStyle}>
-            <label style={labelStyle}>
-              Competitor Discount: {(competitorDiscount * 100).toFixed(0)}%
-            </label>
-            <input
-              type="range"
-              min={0}
-              max={0.2}
-              step={0.01}
+              type="number"
               value={competitorDiscount}
               onChange={(e) => setCompetitorDiscount(Number(e.target.value))}
-              style={sliderStyle}
+              style={inputStyle}
             />
           </div>
         </div>
@@ -202,16 +172,12 @@ const PricingApp = () => {
             <span>{calculationDetails.hoursDiscount?.toFixed(2)}%</span>
           </div>
           <div style={detailItemStyle}>
-            <span>Minimum Price:</span>
-            <span>${calculationDetails.minPrice?.toFixed(2)}</span>
+            <span>Gross Margin:</span>
+            <span>{calculationDetails.grossMargin?.toFixed(2)}%</span>
           </div>
-          <div style={detailItemStyle}>
-            <span>Suggested Price (before adjustments):</span>
-            <span>${calculationDetails.suggestedPrice?.toFixed(2)}</span>
-          </div>
-          <div style={detailItemStyle}>
-            <span>Final Price:</span>
-            <span>${calculationDetails.hourlyRate?.toFixed(2)}</span>
+          <div style={{ ...detailItemStyle, fontWeight: '500', marginTop: '16px' }}>
+            <span>Note:</span>
+            <span>The target gross margin is preferred to be 27% or more.</span>
           </div>
         </div>
       </div>
