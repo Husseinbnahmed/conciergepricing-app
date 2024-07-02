@@ -122,7 +122,7 @@ const PricingApp = () => {
 
           <div style={inputContainerStyle}>
             <label style={labelStyle}>
-              Number of Units: 
+              Number of Multifamily Units (total): 
             </label>
             <input
               type="number"
@@ -134,7 +134,7 @@ const PricingApp = () => {
 
           <div style={inputContainerStyle}>
             <label style={labelStyle}>
-              Hours per Week: 
+              Hours of Operation per Week: 
             </label>
             <input
               type="number"
@@ -146,7 +146,7 @@ const PricingApp = () => {
 
           <div style={inputContainerStyle}>
             <label style={labelStyle}>
-              Competitor Discount: 
+              General Discount on top of Competitor Price: 
             </label>
             <input
               type="number"
