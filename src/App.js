@@ -33,7 +33,7 @@ const PricingApp = () => {
     minHeight: '100vh',
     backgroundColor: '#f5f5f7',
     padding: '48px 16px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", Roboto, Helvetica, Arial, sans-serif',
   };
 
   const cardStyle = {
